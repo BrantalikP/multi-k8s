@@ -1,0 +1,23 @@
+sudo: required
+services:
+ - docker
+
+before install:
+ - docker build -t grounip/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+ - docker run -e CI=true grounip/react-test npm test -- --coverage
+
+after_success:
+ - docker build -t grounip/multi-client ./client
+ - docker build -t grounip/multi-nginx ./nginx
+ - docker build -t grounip/multi-server ./server
+ - docker build -t grounip/multi-worker ./worker
+# Log in to the docker CLI
+ - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+# Take those images and push them to docker hub
+ - docker push grounip/multi-client
+ - docker grounip/multi-nginx
+ - docker grounip/multi-server
+ - docker grounip/multi-worker
