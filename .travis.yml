@@ -18,6 +18,6 @@ after_success:
 
 # Take those images and push them to docker hub
  - docker push grounip/multi-client
- - docker grounip/multi-nginx
- - docker grounip/multi-server
- - docker grounip/multi-worker
+ - docker push grounip/multi-nginx
+ - docker push grounip/multi-server
+ - docker push grounip/multi-worker
